@@ -5,7 +5,7 @@ Este repo se destina à todos os artefatos da formação de engenheiro .NET com 
 
 ## [Fundamentos de Performance em .NET](./Fundamentos%20de%20Performance%20em%20.NET/README.md)
 
-1. - [Introdução à Otimização de Performance](Fundamentos%20de%20Performance%20em%20.NET/Introdução%20à%20Otimização%20de%20Performance.md)
+1. [Introdução à Otimização de Performance](Fundamentos%20de%20Performance%20em%20.NET/Introdução%20à%20Otimização%20de%20Performance.md)
    - Definição de performance em aplicações .NET
    - Importância da performance para a experiência do usuário
 
