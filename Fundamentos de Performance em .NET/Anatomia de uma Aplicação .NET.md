@@ -43,3 +43,56 @@ Para criar uma `webapi`, com o [dotnet sdk](https://dotnet.microsoft.com/downloa
 ```sh
 dotnet new webapi -n MinhaApi
 ```
+
+## Ciclo de vida de uma requisição HTTP em aplicações ASP.NET Core
+
+### Servers
+
+Uma aplicação [ASP.NET Core](https://learn.microsoft.com/aspnet/core/introduction-to-aspnet-core?view=aspnetcore-8.0) é executada com uma implementação de servidor `HTTP in-process`. A implementação do servidor escuta por requisições HTTP e as disponibiliza para a aplicação como um conjunto de funcionalidades de requisição, compostas em um [HttpContext](https://learn.microsoft.com/dotnet/api/system.web.httpcontext?view=netframework-4.8.1).
+
+Com `ASP.NET Core`, você pode escolher entre `in-process` servidores: [Kestrel](https://learn.microsoft.com/aspnet/core/fundamentals/servers/kestrel?view=aspnetcore-8.0), [HTTP.sys](https://learn.microsoft.com/aspnet/core/fundamentals/servers/httpsys?view=aspnetcore-8.0).
+O mais comum nas aplicações modernas, é a utilização do `Kestrel`
+
+### Kestrel
+
+O `Kestrel` é um servidor web de código aberto e multiplataforma desenvolvido pela Microsoft. Ele é o servidor web padrão usado pelo `ASP.NET Core` para processar solicitações HTTP em aplicativos web. O `Kestrel` é leve, rápido e altamente escalável, sendo capaz de lidar com um grande volume de solicitações de forma eficiente. Ele é frequentemente combinado com servidores `proxy reversos`, como o `IIS` ou o `Nginx`, para gerenciar o tráfego da web de maneira mais robusta e flexível.
+
+O `Kestrel` e a aplicação `ASP.NET Core` têm responsabilidades distintas no processamento de solicitações HTTP:
+
+**Kestrel:**
+
+- Gerenciamento do servidor HTTP: O Kestrel é responsável por iniciar, gerenciar e manter o servidor web HTTP que lida com as solicitações HTTP recebidas pelos clientes.
+- Escuta de Portas: O Kestrel escuta em uma porta específica para receber solicitações HTTP vindas dos clientes.
+- Gerenciamento de Conexões: Ele gerencia as conexões de rede entre os clientes e o servidor, garantindo a estabilidade e eficiência na comunicação.
+- Encaminhamento de Solicitações: O Kestrel encaminha as solicitações recebidas para a aplicação ASP.NET Core para processamento.
+
+**Aplicação ASP.NET Core:**
+
+- Roteamento: A aplicação define as rotas e regras de roteamento para direcionar solicitações HTTP para os controladores e endpoints apropriados.
+- Lógica de Negócio: Responsável por executar a lógica de negócio da aplicação, incluindo acesso a dados, autenticação, autorização, manipulação de requisições, entre outras tarefas.
+- Geração de Respostas: Com base no processamento da solicitação, a aplicação gera e retorna as respostas HTTP adequadas, incluindo status, cabeçalhos e conteúdo.
+- Middleware: Implementação de middlewares para processar solicitações HTTP antes de chegarem aos controladores, como autenticação, compressão de resposta, cache, entre outros.
+
+![kestrel](../images/kestrel-to-internet2.png)
+
+### Reverse-Proxy
+
+Um servidor `proxy reverso` captura a requisição antes de passá-la para sua aplicação. No Windows, o servidor `proxy reverso` será tipicamente o `IIS`, e no `Linux` ou macOS pode ser o `NGINX` ou `Apache`. Um servidor `proxy reverso` é um software responsável por receber requisições e encaminhá-las para o servidor web apropriado. O servidor `proxy reverso` é exposto diretamente à internet, enquanto o servidor web subjacente é exposto apenas ao proxy. Essa configuração tem vários benefícios, principalmente em termos de segurança e desempenho para os servidores web. A requisição é encaminhada do servidor `proxy reverso` para sua aplicação ASP.NET Core.
+
+Cada aplicação ASP.NET Core possui um servidor web integrado, o `Kestrel` por padrão, que é responsável por receber requisições brutas e construir uma representação interna dos dados, o objeto `HttpContext`, que pode ser usado pelo restante da aplicação.
+
+![http-request](../images/http-requests-pipeline.png)
+
+### ASP.NET Core request pipeline
+
+Existe uma grande complexidade para a requisição chegar até o processo `ASP.NET Core`, entretanto, a complexidade não para por aí, quando a requisição chega até o processo, muitas outras coisas acontecem.
+
+O pipeline de requisições do ASP.NET Core consiste em uma sequência de `delegates` de requisição, chamados um após o outro. O diagrama a seguir demonstra o conceito. A execução segue as setas pretas.
+
+![request-pipeline](../images/request-delegate-pipeline.png)
+
+### Middlewares
+
+O diagrama a seguir mostra o pipeline completo de processamento de requisições para aplicativos `ASP.NET Core MVC` e `Razor Pages`. Você pode ver como, em um aplicativo típico, os `middlewares` existentes são ordenados e onde os `middlewares` personalizados são adicionados. Você tem total controle sobre como reorganizar os `middlewares` existentes ou injetar novos `middlewares` personalizados conforme necessário para seus cenários.
+
+![middlewares](../images/middleware-pipeline.svg)

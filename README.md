@@ -9,7 +9,7 @@ Este repo se destina à todos os artefatos da formação de engenheiro .NET com 
    - Definição de performance em aplicações .NET
    - Importância da performance para a experiência do usuário
 
-2. Anatomia de uma Aplicação .NET
+2. [Anatomia de uma Aplicação .NET](./Fundamentos%20de%20Performance%20em%20.NET/Anatomia%20de%20uma%20Aplicação%20.NET.md)
    - Estrutura básica de uma aplicação .NET
    - Ciclo de vida de uma requisição HTTP em aplicações web
    - ThreadPool: funcionamento e otimizações
