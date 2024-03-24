@@ -1,0 +1,6 @@
+@Threadpool_Aspnet_HostAddress = http://localhost:5240
+
+GET {{Threadpool_Aspnet_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
