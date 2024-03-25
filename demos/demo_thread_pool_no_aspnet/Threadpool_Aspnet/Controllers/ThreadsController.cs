@@ -14,7 +14,6 @@ namespace Threadpool_Aspnet.Controllers
             var threadPoolQueue = ThreadPool.PendingWorkItemCount;
             var threadNumber = ThreadPool.ThreadCount;
 
-
             var msg = $"Requisição processada pela thread: {threadId} \n ThreadPool numero de threads: {threadNumber} \n ThreadPool Tasks Pendendetes: {threadPoolQueue}";
             Console.WriteLine(msg);
             return Ok(msg);

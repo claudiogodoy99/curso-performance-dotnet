@@ -12,10 +12,12 @@ Este repo se destina à todos os artefatos da formação de engenheiro .NET com 
 2. [Anatomia de uma Aplicação .NET](./Fundamentos%20de%20Performance%20em%20.NET/Anatomia%20de%20uma%20Aplicação%20.NET.md)
    - Estrutura básica de uma aplicação .NET
    - Ciclo de vida de uma requisição HTTP em aplicações web
-   - ThreadPool: funcionamento e otimizações
 
-3. Gerenciamento de Memória em .NET
-   - Garbage Collection: funcionamento e otimizações
+3. Recursos do Common Language Runtime
+   - ThreadPool: Overview
+   - Managed Heap
+   - Garbage Collection: Overview
+   - JIT: Overview
 
 ## Otimização Avançada em .NET
 
