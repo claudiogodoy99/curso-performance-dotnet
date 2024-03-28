@@ -148,3 +148,66 @@ Em resumo, o modo de servidor é ideal para ambientes com alta demanda de recurs
 
 [demo-gc](../demos/demo_gc/)
 
+## JIT: Overview
+
+O Common Language Runtime (CLR) é exatamente o que o nome sugere: um tempo de execução que pode ser utilizado por diversas e variadas linguagens de programação. As funcionalidades principais do CLR (como gerenciamento de memória, carregamento de assemblies, segurança, tratamento de exceções e sincronização de threads) estão disponíveis para todas as linguagens de programação que o utilizam, sem exceção.
+
+Então, se o que eu digo é verdade, qual é a vantagem de usar uma linguagem de programação sobre outra? Bem, eu vejo os compiladores como verificadores de sintaxe e analisadores de "código correto". Eles examinam seu código-fonte, garantem que o que você escreveu faça sentido e, em seguida, geram código que descreve sua intenção. Diferentes linguagens de programação permitem que você desenvolva utilizando sintaxes diferentes.
+
+![compilation](../images/il-compiler.png)
+
+O IL é uma linguagem de máquina independente de CPU criada pela Microsoft após consulta a diversos escritores de linguagens/compiladores comerciais e acadêmicos externos. O IL é uma linguagem muito mais avançada do que a maioria das linguagens de máquina de CPU. O IL pode acessar e manipular tipos de objetos e possui instruções para criar e inicializar objetos, chamar métodos virtuais em objetos e manipular elementos de arrays diretamente. Ele até possui instruções para lançar e capturar exceções para o tratamento de erros. Você pode pensar no IL como uma linguagem de máquina orientada a objetos.
+
+Normalmente, os desenvolvedores programarão em uma linguagem de alto nível, como C#, Visual Basic ou F#. Os compiladores para essas linguagens de alto nível produzem IL. No entanto, como qualquer outra linguagem de máquina, o IL pode ser escrito em linguagem de montagem, e a Microsoft fornece um Assembler de IL, o ILAsm.exe. A Microsoft também fornece um Desassembler de IL, o ILDasm.exe.
+
+Para executar um método, seu IL deve primeiro ser convertido em instruções nativas da CPU. Isso é feito pelo compilador JIT (just-in-time) do CLR.
+
+![jit-compiler](../images/jit-compiler.png)
+
+Quando Main faz sua primeira chamada para WriteLine, a função JITCompiler é chamada. A função JITCompiler é responsável por compilar o código IL de um método em instruções nativas da CPU. Como o IL está sendo compilado "na hora", esse componente do CLR é frequentemente chamado de JITter ou compilador JIT.
+
+Quando chamada, a função JITCompiler sabe qual método está sendo chamado e qual tipo define esse método. A função JITCompiler então busca no metadado da assembly definidora pelo IL do método chamado. Em seguida, o JITCompiler verifica e compila o código IL em instruções nativas da CPU. As instruções nativas da CPU são salvas em um bloco de memória alocado dinamicamente. Em seguida, o JITCompiler volta para a entrada do método chamado na estrutura de dados interna do tipo criada pelo CLR e substitui a referência que o chamou inicialmente pelo endereço do bloco de memória contendo as instruções nativas da CPU que acabou de compilar. Finalmente, a função JITCompiler salta para o código no bloco de memória. Esse código é a implementação do método WriteLine (a versão que recebe um parâmetro de String). Quando esse código retorna, ele volta ao código em Main, que continua a execução normalmente.
+
+Main agora chama WriteLine uma segunda vez. Desta vez, o código para WriteLine já foi verificado e compilado. Portanto, a chamada vai diretamente para o bloco de memória, ignorando completamente a função JITCompiler. Após a execução do método WriteLine, ela retorna para Main.
+
+![jit-compiler](../images/jit-compiler-2.png)
+
+### Sharplab
+
+[Sharplab](https://sharplab.io/) é um site muito útil que permite inspecionar o código assembly gerado de um método em C#. É muito conveniente quando você não tem o Visual Studio instalado ou quando deseja compartilhar um trecho com outra pessoa. No entanto, você não pode configurar as opções do JIT, como otimizações completas ou compilação em camadas.
+
+### Demo
+
+```csharp
+using System;
+
+namespace JitCompilationDemo
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            int a = 10;
+            int b = 20;
+
+            // Perform some numerical operations
+            int sum = Add(a, b);
+            int product = Multiply(a, b);
+
+            Console.WriteLine($"Sum: {sum}");
+            Console.WriteLine($"Product: {product}");
+        }
+
+        static int Add(int x, int y)
+        {
+            return x + y;
+        }
+
+        static int Multiply(int x, int y)
+        {
+            return x * y;
+        }
+    }
+}
+
+```

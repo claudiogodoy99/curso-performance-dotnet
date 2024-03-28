@@ -96,37 +96,3 @@ O pipeline de requisições do ASP.NET Core consiste em uma sequência de `deleg
 O diagrama a seguir mostra o pipeline completo de processamento de requisições para aplicativos `ASP.NET Core MVC` e `Razor Pages`. Você pode ver como, em um aplicativo típico, os `middlewares` existentes são ordenados e onde os `middlewares` personalizados são adicionados. Você tem total controle sobre como reorganizar os `middlewares` existentes ou injetar novos `middlewares` personalizados conforme necessário para seus cenários.
 
 ![middlewares](../images/middleware-pipeline.svg)
-
-## ThreadPool: funcionamento e otimizações
-
-Criar e destruir uma thread é uma operação cara em termos de tempo. Além disso, ter muitas threads desperdiça recursos de memória e prejudica o desempenho devido ao sistema operacional ter que agendar e alternar de contexto entre as threads em execução. Para melhorar essa situação, o CLR contém código para gerenciar seu próprio ThreadPool. Você pode pensar em um [ThreadPool](https://learn.microsoft.com/dotnet/api/system.threading.threadpool?view=net-8.0) como um conjunto de threads disponíveis para uso em seu aplicativo.
-
-Quando o CLR é inicializado, o [ThreadPool](https://learn.microsoft.com/dotnet/api/system.threading.threadpool?view=net-8.0) não possui threads nele. Internamente, o [ThreadPool](https://learn.microsoft.com/dotnet/api/system.threading.threadpool?view=net-8.0) mantém uma fila de solicitações de operações. Quando seu aplicativo deseja realizar uma operação assíncrona, você chama algum método que adiciona uma entrada na fila do [ThreadPool](https://learn.microsoft.com/dotnet/api/system.threading.threadpool?view=net-8.0). O código do [ThreadPool](https://learn.microsoft.com/dotnet/api/system.threading.threadpool?view=net-8.0) extrairá entradas desta fila e despachará a entrada para uma thread do [ThreadPool](https://learn.microsoft.com/dotnet/api/system.threading.threadpool?view=net-8.0). Se não houver threads no [ThreadPool](https://learn.microsoft.com/dotnet/api/system.threading.threadpool?view=net-8.0), uma nova thread será criada. Criar uma thread tem um custo de desempenho associado a isso (como já discutido). No entanto, quando uma thread do [ThreadPool](https://learn.microsoft.com/dotnet/api/system.threading.threadpool?view=net-8.0) conclui sua tarefa, a thread não é destruída; em vez disso, ela é devolvida ao [ThreadPool](https://learn.microsoft.com/dotnet/api/system.threading.threadpool?view=net-8.0), onde fica ociosa esperando para responder a outra solicitação. Como a thread não se destrói, não há custo de desempenho adicional.
-
-Se seu aplicativo faz muitas solicitações ao [ThreadPool](https://learn.microsoft.com/dotnet/api/system.threading.threadpool?view=net-8.0), ele tentará atender a todas as solicitações usando apenas esta única thread. No entanto, se seu aplicativo estiver enfileirando várias solicitações mais rápido do que o [ThreadPool](https://learn.microsoft.com/dotnet/api/system.threading.threadpool?view=net-8.0) pode lidar com elas, threads adicionais serão criadas. Seu aplicativo eventualmente chegará a um ponto em que todas as suas solicitações podem ser tratadas por um pequeno número de threads, então o [ThreadPool](https://learn.microsoft.com/dotnet/api/system.threading.threadpool?view=net-8.0) não deve precisar criar muitas threads.
-
-### Usando o ThreadPool
-
-A maneira mais fácil de usar o pool de threads é usar a [Task Parallel Library (TPL)](https://learn.microsoft.com/dotnet/standard/parallel-programming/task-based-asynchronous-programming). Por padrão, tipos da TPL como `Task` e `Task<TResult>` utilizam threads do `ThreadPool` para executar tarefas.
-
-Você também pode usar o `ThreadPool` chamando ThreadPool.QueueUserWorkItem a partir de código gerenciado (ou ICorThreadpool::CorQueueUserWorkItem a partir de código não gerenciado) e passando um delegado System.Threading.WaitCallback que representa o método que executa a tarefa.
-
-Outra forma de usar o `ThreadPool` é enfileirar itens de trabalho relacionados a uma operação de espera usando o método `ThreadPool.RegisterWaitForSingleObject` e passando um `System.Threading.WaitHandle` que, quando sinalizado ou quando expira o tempo limite, chama o método representado pelo delegado `System.Threading.WaitOrTimerCallback`. Threads do `ThreadPool` são usadas para invocar os métodos de retorno de chamada.
-
-#### Demonstração ThreadPool
-
-[demo_thread_pool](../demos/demo_thread_pool/)
-
-### Papel do ThreadPool no ASP.NET Core request pipeline
-
-O `ThreadPool` desempenha um papel fundamental no pipeline de requisições do ASP.NET Core, gerenciando um conjunto de threads reutilizáveis para processar solicitações de forma eficiente.
-
-Quando uma requisição HTTP é recebida pelo servidor ASP.NET Core, ela é colocada na fila do `ThreadPool`. Este, por sua vez, atribui essas solicitações às threads disponíveis para execução.
-
-À medida que as threads do `ThreadPool` se tornam disponíveis, elas são designadas para processar as solicitações na fila, permitindo que várias requisições sejam processadas simultaneamente de forma concorrente, sem a necessidade de criar e destruir threads a cada requisição.
-
-Essa capacidade de atribuir e reutilizar threads do `ThreadPool` para processar várias requisições simultaneamente é crucial para garantir um bom desempenho e escalabilidade em aplicações ASP.NET Core, especialmente em ambientes com alto volume de tráfego e múltiplas solicitações concorrentes.
-
-#### Demonstração ThreadPool no ASP.NET Core request pipeline
-
-[demo threadpool .net](../demos/demo_thread_pool_no_aspnet/Threadpool_Aspnet/)
