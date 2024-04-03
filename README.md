@@ -3,7 +3,7 @@
 
 Este repo se destina à todos os artefatos da formação de engenheiro .NET com foco em Perfomance.
 
-## [Fundamentos de Performance em .NET](./Fundamentos%20de%20Performance%20em%20.NET/README.md)
+## [Fundamentos de Performance em .NET]
 
 1. [Introdução à Otimização de Performance](Fundamentos%20de%20Performance%20em%20.NET/Introdução%20à%20Otimização%20de%20Performance.md)
    - Definição de performance em aplicações .NET
@@ -13,7 +13,7 @@ Este repo se destina à todos os artefatos da formação de engenheiro .NET com 
    - Estrutura básica de uma aplicação .NET
    - Ciclo de vida de uma requisição HTTP em aplicações web
 
-3. Recursos do Common Language Runtime
+3. [Recursos do Common Language Runtime](./Fundamentos%20de%20Performance%20em%20.NET/Recursos%20do%20Common%20Language%20Runtime.md)
    - ThreadPool: Overview
    - Managed Heap
    - Garbage Collection: Overview
@@ -21,27 +21,23 @@ Este repo se destina à todos os artefatos da formação de engenheiro .NET com 
 
 ## Otimização Avançada em .NET
 
-1. Otimização de Algoritmos
-   - Complexidade de algoritmos e seu impacto na performance
-
-2. Otimização de E/S (Entrada e Saída)
-   - Uso eficiente de operações de leitura/escrita em arquivos e bancos de dados
-   - Utilização de buffers e operações assíncronas
-
-3. Análise de desempenho em ciclo de desenvolvimento
+1. Análise de desempenho em ciclo de desenvolvimento
    - Uso e importância do benchmark
-   - Ferramentas de teste de carga: K6 e JMetter
+   - Ferramentas de teste de carga: K6
+
+2. Async Await
+   - Impacto na escalabilidade
+   - Problemas de comuns no uso do async await (ThreadPool overhead)
+
+3. Ciclo de vida de objetos de I/O
+   - Gerenciamento dos objetos de conexão com Banco de dados
+   - Gerenciamento dos objetos de conexão http
+   - Gerenciamento dos objetos de FileStream
+   - Como tomar decisão de ciclo de vida de um objeto de I/O
 
 ## Introdução ao Monitoramento e Diagnóstico em Aplicações .NET
 
-1. Importância do Monitoramento e Diagnóstico
-   - Significado para a saúde e desempenho da aplicação
-   - Como o monitoramento proativo pode evitar problemas futuros
 
-2. Overview do .NET SDK Ferramentas
-   - dotnet-counters: Monitoramento em tempo real de métricas do sistema e da aplicação.
-   - dotnet-trace: Captura de eventos de diagnóstico para análise detalhada.
-   - dotnet-dump: Coleta de dumps de memória para análise de problemas de memória e exceções.
 
 ## Uso Avançado das Ferramentas do .NET SDK
 
@@ -62,14 +58,18 @@ Este repo se destina à todos os artefatos da formação de engenheiro .NET com 
 
 ## Monitoramento Contínuo com Application Insights
 
-1. Introdução ao Application Insights
+1. Importância do Monitoramento e Diagnóstico
+   - Significado para a saúde e desempenho da aplicação
+   - Como o monitoramento proativo pode evitar problemas futuros
+
+2. Introdução ao Application Insights
    - Visão geral das funcionalidades do Application Insights
    - Configuração em aplicações .NET
 
-2. Coleta e Visualização de Dados
+3. Coleta e Visualização de Dados
    - Rastreamento de solicitações HTTP, exceções e dependências
    - Personalização de eventos para coleta de dados específicos da aplicação
 
-3. Análise e Alertas em Tempo Real
+4. Análise e Alertas em Tempo Real
    - Criação de painéis personalizados para monitorar métricas importantes
    - Configuração de alertas para notificações em tempo real sobre problemas críticos
