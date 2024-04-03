@@ -25,19 +25,16 @@ Este repo se destina à todos os artefatos da formação de engenheiro .NET com 
    - Uso e importância do benchmark
    - Ferramentas de teste de carga: K6
 
-2. Async Await
+2. Modelo de programação assíncrona (TAP)
+   - Async Await
    - Impacto na escalabilidade
-   - Problemas de comuns no uso do async await (ThreadPool overhead)
+   - ThreadPool overhead: Problemas de comuns no uso do async await
 
 3. Ciclo de vida de objetos de I/O
    - Gerenciamento dos objetos de conexão com Banco de dados
    - Gerenciamento dos objetos de conexão http
    - Gerenciamento dos objetos de FileStream
    - Como tomar decisão de ciclo de vida de um objeto de I/O
-
-## Introdução ao Monitoramento e Diagnóstico em Aplicações .NET
-
-
 
 ## Uso Avançado das Ferramentas do .NET SDK
 
