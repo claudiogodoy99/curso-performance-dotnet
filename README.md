@@ -21,16 +21,23 @@ Este repo se destina à todos os artefatos da formação de engenheiro .NET com 
 
 ## Otimização Avançada em .NET
 
-1. Análise de desempenho em ciclo de desenvolvimento
+1. [Análise de desempenho em ciclo de desenvolvimento](Otimização%20Avançada%20em%20.NET/Análise%20de%20desempenho%20em%20ciclo%20de%20desenvolvimento.md)
    - Uso e importância do benchmark
    - Ferramentas de teste de carga: K6
 
-2. Modelo de programação assíncrona (TAP)
+2. Gerenciando a memória
+   - Utilização de `structs` e `refs`
+   - Evitando a concatenação de `string`
+   - `Regex` o vilão do compilador
+   - Otimizando expressões `LINQ`
+   - Como identificar `MemoryLeaks` utilizando Contadores de performance e as ferramentas de diagnóstico do Visual Studio
+
+3. Modelo de programação assíncrona (TAP)
    - Async Await
    - Impacto na escalabilidade
    - ThreadPool overhead: Problemas de comuns no uso do async await
 
-3. Ciclo de vida de objetos de I/O
+4. Ciclo de vida de objetos de I/O
    - Gerenciamento dos objetos de conexão com Banco de dados
    - Gerenciamento dos objetos de conexão http
    - Gerenciamento dos objetos de FileStream
