@@ -96,3 +96,4 @@ O pipeline de requisições do ASP.NET Core consiste em uma sequência de `deleg
 O diagrama a seguir mostra o pipeline completo de processamento de requisições para aplicativos `ASP.NET Core MVC` e `Razor Pages`. Você pode ver como, em um aplicativo típico, os `middlewares` existentes são ordenados e onde os `middlewares` personalizados são adicionados. Você tem total controle sobre como reorganizar os `middlewares` existentes ou injetar novos `middlewares` personalizados conforme necessário para seus cenários.
 
 ![middlewares](../images/middleware-pipeline.svg)
+

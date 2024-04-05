@@ -34,7 +34,6 @@ Os usuários do k6 geralmente são Desenvolvedores, Engenheiros de QA, SDETs e S
 
 - Monitoramento de desempenho e sintético: Com o k6, você pode automatizar e agendar testes para serem acionados com muita frequência e uma carga leve para validar continuamente o desempenho e a disponibilidade do seu ambiente de produção.
 
-
 > Para instalar o K6 siga o passo a passo: [install](https://grafana.com/docs/k6/latest/get-started/installation/)
 
 ### Demo K6
@@ -52,7 +51,7 @@ As ferramentas disponíveis no Performance Profiler incluem:
 - Memory usage: Monitora o uso de memória pelo aplicativo, incluindo alocações e liberações de memória.
 - .NET async tool: Ferramenta específica para rastrear e otimizar operações assíncronas em aplicativos .NET.
 - Instrumentation: Fornece métricas detalhadas sobre o desempenho do aplicativo, como tempos de execução e chamadas de função.
-File I/O: Monitora operações de entrada e saída de arquivos realizadas pelo aplicativo.
+- File I/O: Monitora operações de entrada e saída de arquivos realizadas pelo aplicativo.
 - .NET Counters: Fornece contadores específicos do .NET para acompanhar métricas de desempenho relevantes.
 - Database tool: Ferramenta para monitorar consultas e operações de banco de dados realizadas pelo aplicativo.
 - GPU usage: Monitora o uso da unidade de processamento gráfico (GPU) pelo aplicativo, se aplicável.
