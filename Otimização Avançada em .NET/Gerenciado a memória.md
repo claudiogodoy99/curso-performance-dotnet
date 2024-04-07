@@ -242,3 +242,46 @@ DisplayValue(in meuNumero);
 // O valor é: 42
 // Tentar modificar meuNumero dentro de DisplayValue resultaria em um erro de compilação
 ```
+
+### Desafio
+
+O desafio está no repositório: [../desafios/desafio_structures_over_class/](../desafios/desafio_structures_over_class/)
+
+Geralmente, o ajuste de desempenho de um aplicativo .NET envolve duas técnicas:
+
+1. Redução do número e tamanho das alocações de heap.
+2. Redução da frequência de cópias de dados.
+
+O **Visual Studio 17.5** oferece ótimas ferramentas para analisar o uso de memória do aplicativo. Depois de identificar onde ocorrem alocações desnecessárias, você pode fazer alterações para minimizá-las, como converter tipos class em tipos struct e usar recursos de segurança ref.
+
+#### Explorando o Aplicativo Inicial
+
+O aplicativo utilizado é uma simulação de um sistema de IoT que monitora sensores para detectar intrusos em uma galeria de segredos. Ele mede a mistura de O2 e CO2 no ar, além de temperatura e umidade.
+
+#### Proposta do desafio
+
+- Análise de Alocações de Memória
+
+Utilize o Visual Studio e a ferramenta de alocação de objetos .NET para analisar as alocações de memória. Certifique-se de usar o build Release para obter resultados precisos.
+
+Ao examinar os gráficos e tabelas de alocações, você pode identificar os tipos mais frequentemente alocados, como o System.String. É importante minimizar a frequência dessas alocações para melhorar o desempenho.
+
+- Alterando Classes para Structs
+
+- - Converta o tipo `SensorMeasurement` de `class` para `struct` para reduzir alocações no heap.
+- - Atualize métodos para usar segurança `ref` onde necessário para preservar a semântica.
+
+- Evitar Cópias Desnecessárias
+
+- - Use o modificador `in` em parâmetros onde o tipo `SensorMeasurement` é passado para evitar cópias desnecessárias.
+
+- Preservar a Semântica
+
+- - Ao alterar de `class` para `struct`, atualize métodos que modificam argumentos para usar `ref` nos tipos de argumento.
+- - Converta propriedades de tipos `class` em `structs` onde possível para reduzir alocações.
+
+- Evitar Conversão Boxing
+
+- - Evite a conversão boxing ao imprimir valores de enumerações.
+
+> Tip: Acesse o link, para um detalhamento do passo a passo da melhoria: [https://learn.microsoft.com/dotnet/csharp/advanced-topics/performance/ref-tutorial]
