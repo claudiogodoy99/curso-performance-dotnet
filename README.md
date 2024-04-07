@@ -27,7 +27,7 @@ Este repo se destina à todos os artefatos da formação de engenheiro .NET com 
 
 2. Gerenciando a memória
    - Utilização de `structs` e `refs`
-   - Evitando a concatenação de `string`
+   - Otimizando o Desempenho de `Strings` no .NET
    - `Regex` o vilão do compilador
    - Otimizando expressões `LINQ`
    - Como identificar `MemoryLeaks` utilizando Contadores de performance e as ferramentas de diagnóstico do Visual Studio
