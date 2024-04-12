@@ -29,7 +29,7 @@ Este repo se destina à todos os artefatos da formação de engenheiro .NET com 
    - Utilização de `structs` e `refs`
    - Otimizando o Desempenho de `Strings` no .NET
    - Como otimizar expressões regulares `Regex`
-   - Otimizando expressões `LINQ`
+   - Expressões `LINQ`
    - Como identificar `MemoryLeaks` utilizando Contadores de performance e as ferramentas de diagnóstico do Visual Studio
 
 3. Modelo de programação assíncrona (TAP)
