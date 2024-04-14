@@ -1,0 +1,6 @@
+@demo_memoryleak_HostAddress = http://localhost:5288
+
+GET {{demo_memoryleak_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
