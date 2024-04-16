@@ -26,11 +26,10 @@ Este repo se destina à todos os artefatos da formação de engenheiro .NET com 
    - Ferramentas de teste de carga: K6
 
 2. Gerenciando a memória
-   - Utilização de `structs` e `refs`
    - Otimizando o Desempenho de `Strings` no .NET
    - Como otimizar expressões regulares `Regex`
    - Expressões `LINQ`
-   - Como identificar `MemoryLeaks` utilizando Contadores de performance e as ferramentas de diagnóstico do Visual Studio
+   - Utilização de `structs` e `refs`
 
 3. Modelo de programação assíncrona (TAP)
    - Async Await

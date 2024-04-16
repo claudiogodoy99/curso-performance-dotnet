@@ -1,8 +1,4 @@
-# Como identificar MemoryLeaks utilizando Contadores de performance e as ferramentas de diagnóstico do Visual Studio
-
-Identificar MemoryLeaks pode ser crucial para o desempenho e estabilidade de um sistema. Utilizando Contadores de performance e as ferramentas de diagnóstico do Visual Studio, é possível monitorar o uso de memória ao longo do tempo e identificar padrões que indicam vazamentos de memória. Essas ferramentas fornecem insights valiosos, permitindo que os desenvolvedores localizem e corrijam eficientemente problemas relacionados à alocação de memória em seus aplicativos.
-
-## Contadores de Performance
+# Contadores de Performance
 
 Contadores de performance são métricas que monitoram o desempenho de um sistema em tempo real. Eles fornecem informações detalhadas sobre o uso de recursos, como CPU, memória, disco e rede.
 
@@ -33,7 +29,3 @@ Para analisar o uso de memória de um aplicativo, você pode usar contadores de 
   - **Significado:** Este contador indica o número de vezes que os objetos da geração 2 são coletados pelo coletor de lixo desde o início do aplicativo. O heap da geração 2 é o mais custoso de manter para um aplicativo. Sempre que há uma coleta da geração 2, tas as `threads` são suspensas. Você deve perfilar o padrão de alocação para o seu aplicativo e minimizar os objetos no heap da geração 2.
 
 - `alloc-rate`: Indica a quantidade de bytes alocados no heap gerenciado entre os intervalos de atualização. Isso representa a taxa de criação de novos objetos e o uso de memória ao longo do tempo.
-
-### Demo profiler Visual Studio
-
-Seguir passo a passo: [Visualize dotnet counters from the Visual Studio profiler](https://learn.microsoft.com/visualstudio/profiling/dotnet-counters-tool?view=vs-2022)
