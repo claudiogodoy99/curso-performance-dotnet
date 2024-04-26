@@ -48,6 +48,7 @@ public async Task<string> GetUserDataAsync(int userId)
     return userData;
 }
 ```
+
 Neste exemplo, o método `GetUserDataAsync` inicia a tarefa `GetUserAsync` (que é uma operação de I/O) e então retorna imediatamente o controle para o chamador. A thread não é bloqueada esperando `GetUserAsync` completar, então pode ser usada para lidar com outras requisições. Uma vez que `GetUserAsync` completa, ele retoma o método `GetUserDataAsync` de onde parou. É assim que o .NET alcança a concorrência e melhora a eficiência da utilização de recursos.
 
 Lembre-se, a chave para lidar com requisições de forma concorrente é evitar bloquear as threads tanto quanto possível, especialmente durante operações de I/O. É aqui que a programação assíncrona se destaca no .NET.
@@ -56,11 +57,11 @@ Lembre-se, a chave para lidar com requisições de forma concorrente é evitar b
 
 Imagine que você é o gerente de uma loja movimentada durante a temporada de festas. Existem muitos clientes entrando e saindo da loja, e você tem que lidar com várias tarefas ao mesmo tempo.
 
-### Bloqueio de Thread:
+### Bloqueio de Thread
 
 Imagine que um cliente entra na loja e faz um pedido especial que levará algum tempo para ser preparado. Em uma situação de bloqueio de thread, você, como gerente, fica parado esperando que o pedido seja concluído antes de atender outros clientes ou realizar outras tarefas. Isso pode causar atrasos e ineficiências, pois você está bloqueado em uma única atividade até que ela seja concluída.
 
-### Programação Assíncrona:
+### Abordagem Assíncrona
 
 Agora, considere a mesma situação, mas com uma abordagem assíncrona. Quando o cliente faz o pedido especial, você anota o pedido e o coloca em andamento, mas em vez de esperar que o pedido seja preparado, você continua atendendo outros clientes e realizando outras tarefas na loja. Quando o pedido especial estiver pronto, você é notificado e pode então atender o cliente sem atrasos significativos. Essa abordagem assíncrona permite que você seja mais eficiente ao lidar com várias tarefas ao mesmo tempo, sem ficar bloqueado em uma única atividade.
 
@@ -68,4 +69,4 @@ Assim como o gerenciamento eficaz de uma loja movimentada requer a capacidade de
 
 ## Demo
 
-Demo para demonstrar um Thread.Sleep vs um await Task.Delay 
+Demo para demonstrar um Thread.Sleep vs um await Task.Delay
