@@ -69,4 +69,190 @@ Assim como o gerenciamento eficaz de uma loja movimentada requer a capacidade de
 
 ## Demo
 
-Demo para demonstrar um Thread.Sleep vs um await Task.Delay
+[Demo para demonstrar um Thread.Sleep vs um await Task.Delay](../demos/demo_async_vs_sync/)
+
+A Demo contém uma pasta com três `k6 scripts`, definindo testes de carga para compararmos as abordagens:
+
+- `script-sync.js` - Teste em `endpoint` contendo o segmento de código `Thread.Sleep` (síncrono).
+- `script-async.js` - Teste em `endpoint` contendo segmento de código `await Task.Delay` (assíncrono).
+- `script-hibrido.js` - Teste dividindo a carga em 50% para ambos `endpoints`.
+
+### `script-sync.js`
+
+```sh
+          /\      |‾‾| /‾‾/   /‾‾/
+     /\  /  \     |  |/  /   /  /
+    /  \/    \    |     (   /   ‾‾\
+   /          \   |  |\  \ |  (‾)  |
+  / __________ \  |__| \__\ \_____/ .io
+
+     execution: local
+        script: .\script-sync.js
+        output: -
+
+     scenarios: (100.00%) 1 scenario, 500 max VUs, 1m50s max duration (incl. graceful stop):
+              * default: Up to 500 looping VUs for 1m20s over 3 stages (gracefulRampDown: 30s, gracefulStop: 30s)
+
+
+     ✓ status is 200
+
+     checks.........................: 100.00% ✓ 6414      ✗ 0
+     data_received..................: 3.5 MB  43 kB/s
+     data_sent......................: 654 kB  8.0 kB/s
+     http_req_blocked...............: avg=93.02µs min=0s       med=0s    max=5.56ms p(90)=0s    p(95)=1.05ms   
+     http_req_connecting............: avg=73.83µs min=0s       med=0s    max=5.56ms p(90)=0s    p(95)=725.29µs 
+   ✗ http_req_duration..............: avg=3.05s   min=302.19ms med=3.02s max=8.24s  p(90)=4.84s p(95)=5.17s    
+       { expected_response:true }...: avg=3.05s   min=302.19ms med=3.02s max=8.24s  p(90)=4.84s p(95)=5.17s    
+     http_req_failed................: 0.00%   ✓ 0         ✗ 6414
+     http_req_receiving.............: avg=48.85µs min=0s       med=0s    max=5.68ms p(90)=0s    p(95)=0s       
+     http_req_sending...............: avg=17.02µs min=0s       med=0s    max=3.67ms p(90)=0s    p(95)=0s       
+     http_req_tls_handshaking.......: avg=0s      min=0s       med=0s    max=0s     p(90)=0s    p(95)=0s       
+     http_req_waiting...............: avg=3.05s   min=302.14ms med=3.02s max=8.24s  p(90)=4.84s p(95)=5.17s    
+     http_reqs......................: 6414    78.060406/s
+     iteration_duration.............: avg=4.06s   min=1.3s     med=4.03s max=9.26s  p(90)=5.86s p(95)=6.17s    
+     iterations.....................: 6414    78.060406/s
+     vus............................: 8       min=8       max=500
+     vus_max........................: 500     min=500     max=500
+
+
+running (1m22.2s), 000/500 VUs, 6414 complete and 0 interrupted iterations
+default ✓ [======================================] 000/500 VUs  1m20s
+ERRO[0083] thresholds on metrics 'http_req_duration' have been crossed
+```
+
+Aqui estão algumas análises e interpretações dos resultados:
+
+- **Check de status (status is 200):** 100% das requisições receberam uma resposta com status 200, o que indica que todas as solicitações foram bem-sucedidas.
+
+- **Check de tempo de resposta (http_req_duration):** O tempo médio de resposta das requisições foi de aproximadamente 3.05 segundos, com um mínimo de 302.19 milissegundos e um máximo de 8.24 segundos. Os valores de 90% e 95% das requisições ficaram abaixo de 4.84 segundos e 5.17 segundos, respectivamente. No entanto, é importante observar que as métricas de tempo de resposta cruzaram os limites definidos nos thresholds, indicando um problema nessa métrica durante o teste.
+
+- **Taxa de requisições:** Foram realizadas 6414 requisições durante o teste, com uma média de 78.06 requisições por segundo.
+
+- **VUs (Usuários Virtuais):** O número de usuários virtuais variou de 8 a 500 durante o teste. O número máximo de VUs foi alcançado e mantido por um período de 1 minuto e 20 segundos.
+
+Em resumo, o teste foi bem-sucedido em termos de status das requisições, mas houve um problema com o tempo de resposta das requisições ultrapassando os limites definidos nos thresholds. Isso pode indicar possíveis gargalos ou problemas de desempenho que precisam ser investigados e otimizados.
+
+### `scrip-async.js`
+
+```sh
+          /\      |‾‾| /‾‾/   /‾‾/
+     /\  /  \     |  |/  /   /  /
+    /  \/    \    |     (   /   ‾‾\
+   /          \   |  |\  \ |  (‾)  |
+  / __________ \  |__| \__\ \_____/ .io
+
+     execution: local
+        script: .\script-async.js
+        output: -
+
+     scenarios: (100.00%) 1 scenario, 500 max VUs, 1m50s max duration (incl. graceful stop):
+              * default: Up to 500 looping VUs for 1m20s over 3 stages (gracefulRampDown: 30s, gracefulStop: 30s)
+
+
+     ✓ status is 200
+
+     checks.........................: 100.00% ✓ 19222      ✗ 0
+     data_received..................: 11 MB   129 kB/s
+     data_sent......................: 1.9 MB  24 kB/s
+     http_req_blocked...............: avg=36µs     min=0s       med=0s       max=22.77ms  p(90)=0s       p(95)=0s
+     http_req_connecting............: avg=24.29µs  min=0s       med=0s       max=22.77ms  p(90)=0s       p(95)=0s
+   ✓ http_req_duration..............: avg=309.49ms min=299.38ms med=309.25ms max=386.67ms p(90)=316.73ms p(95)=317.86ms
+       { expected_response:true }...: avg=309.49ms min=299.38ms med=309.25ms max=386.67ms p(90)=316.73ms p(95)=317.86ms
+     http_req_failed................: 0.00%   ✓ 0          ✗ 19222
+     http_req_receiving.............: avg=78.21µs  min=0s       med=0s       max=3.29ms   p(90)=172.69µs p(95)=551.12µs
+     http_req_sending...............: avg=19.64µs  min=0s       med=0s       max=4.53ms   p(90)=0s       p(95)=0s
+     http_req_tls_handshaking.......: avg=0s       min=0s       med=0s       max=0s       p(90)=0s       p(95)=0s
+     http_req_waiting...............: avg=309.39ms min=299.38ms med=309.15ms max=386.67ms p(90)=316.63ms p(95)=317.74ms
+     http_reqs......................: 19222   236.438947/s
+     iteration_duration.............: avg=1.31s    min=1.3s     med=1.31s    max=1.38s    p(90)=1.32s    p(95)=1.32s
+     iterations.....................: 19222   236.438947/s
+     vus............................: 43      min=19       max=499
+     vus_max........................: 500     min=500      max=500
+
+                                                                                                               
+running (1m21.3s), 000/500 VUs, 19222 complete and 0 interrupted iterations                                    
+default ✓ [======================================] 000/500 VUs  1m20s  
+```
+
+- **Check de status (status is 200):** 100% das requisições receberam uma resposta com status 200, indicando que todas as solicitações foram bem-sucedidas.
+
+- **Check de tempo de resposta (http_req_duration):** O tempo médio de resposta das requisições foi de aproximadamente 309.49 milissegundos (ms), com um mínimo de 299.38 ms e um máximo de 386.67 ms. Os valores de 90% e 95% das requisições ficaram abaixo de 316.73 ms e 317.86 ms, respectivamente. Isso sugere uma resposta rápida e consistente do servidor para a maioria das requisições.
+
+- **Taxa de requisições:** Durante o teste, foram realizadas 19222 requisições, com uma média de 236.44 requisições por segundo.
+
+- **VUs (Usuários Virtuais):** O número de usuários virtuais variou de 19 a 499 durante o teste, com um máximo de 500 usuários virtuais alcançado.
+
+- **Outras métricas:** As métricas relacionadas ao tempo de bloqueio, conexão, envio, espera e recebimento das requisições estão dentro de limites aceitáveis, com tempos médios e máximos razoáveis.
+
+No geral, os resultados indicam um desempenho sólido do sistema durante o teste de carga. A taxa de requisições por segundo é satisfatória, e o tempo de resposta das requisições está dentro de limites aceitáveis, mostrando uma boa capacidade de resposta do servidor sob carga.
+
+### `scrip-hibrido.js`
+
+```sh
+          /\      |‾‾| /‾‾/   /‾‾/
+     /\  /  \     |  |/  /   /  /
+    /  \/    \    |     (   /   ‾‾\
+   /          \   |  |\  \ |  (‾)  |
+  / __________ \  |__| \__\ \_____/ .io
+
+     execution: local
+        script: .\script-hibrido.js
+        output: -
+
+     scenarios: (100.00%) 1 scenario, 500 max VUs, 1m50s max duration (incl. graceful stop):
+              * default: Up to 500 looping VUs for 1m20s over 3 stages (gracefulRampDown: 30s, gracefulStop: 30s)
+
+
+     ✓ status is 200
+
+     checks.........................: 100.00% ✓ 12364      ✗ 0
+     data_received..................: 6.8 MB  84 kB/s
+     data_sent......................: 1.3 MB  16 kB/s
+     http_req_blocked...............: avg=54.91µs min=0s       med=0s       max=19.26ms p(90)=0s    p(95)=0s   
+
+     http_req_connecting............: avg=41.59µs min=0s       med=0s       max=19.26ms p(90)=0s    p(95)=0s   
+
+   ✗ http_req_duration..............: avg=1.57s   min=299.55ms med=631.43ms max=5.58s   p(90)=4.03s p(95)=4.39s
+
+       { expected_response:true }...: avg=1.57s   min=299.55ms med=631.43ms max=5.58s   p(90)=4.03s p(95)=4.39s
+
+     http_req_failed................: 0.00%   ✓ 0          ✗ 12364
+     http_req_receiving.............: avg=65.19µs min=0s       med=0s       max=20.94ms p(90)=0s    p(95)=268.35µs
+     http_req_sending...............: avg=25.18µs min=0s       med=0s       max=22.97ms p(90)=0s    p(95)=0s   
+
+     http_req_tls_handshaking.......: avg=0s      min=0s       med=0s       max=0s      p(90)=0s    p(95)=0s   
+
+     http_req_waiting...............: avg=1.57s   min=299.55ms med=631.43ms max=5.58s   p(90)=4.03s p(95)=4.39s
+
+     http_reqs......................: 12364   153.928058/s
+     iteration_duration.............: avg=4.15s   min=1.6s     med=4.1s     max=7.2s    p(90)=6.02s p(95)=6.86s
+
+     iterations.....................: 6182    76.964029/s
+     vus............................: 226     min=19       max=500
+     vus_max........................: 500     min=500      max=500
+
+                                                                                                               
+running (1m20.3s), 000/500 VUs, 6182 complete and 0 interrupted iterations                                     
+default ✓ [======================================] 000/500 VUs  1m20s                                          
+ERRO[0082] thresholds on metrics 'http_req_duration' have been crossed
+```
+
+Esses são os resultados de um teste de carga com um script híbrido, onde se misturam chamadas síncronas e assíncronas:
+
+- **Check de status (status is 200):** 100% das requisições receberam uma resposta com status 200, indicando que todas as solicitações foram bem-sucedidas.
+
+- **Check de tempo de resposta (http_req_duration):** O tempo médio de resposta das requisições foi de aproximadamente 1.57 segundos, com um mínimo de 299.55 milissegundos e um máximo de 5.58 segundos. Os valores de 90% e 95% das requisições ficaram abaixo de 4.03 segundos e 4.39 segundos, respectivamente. No entanto, essas métricas cruzaram os thresholds definidos, indicando um problema com o tempo de resposta durante o teste.
+
+- **Taxa de requisições:** Durante o teste, foram realizadas 12364 requisições, com uma média de 153.93 requisições por segundo.
+
+- **VUs (Usuários Virtuais):** O número de usuários virtuais variou de 19 a 500 durante o teste, com um máximo de 500 usuários virtuais alcançado.
+
+- **Outras métricas:** As métricas relacionadas ao tempo de bloqueio, conexão, envio, espera e recebimento das requisições estão dentro de limites aceitáveis, com tempos médios e máximos razoáveis.
+
+O teste teve sucesso em relação ao status das requisições, mas o tempo de resposta ultrapassou os thresholds definidos, indicando um problema nessa métrica durante o teste. Isso pode ser um indicativo de possíveis gargalos ou problemas de desempenho que precisam ser investigados e otimizados.
+
+## Conclusão
+
+Ao analisar o impacto e as diferenças entre as abordagens síncronas e assíncronas no `.NET`, fica claro que a abordagem assíncrona oferece vantagens significativas, especialmente em termos de eficiência e desempenho do `threadpool`. A execução assíncrona permite que o `threadpool` seja aproveitado de forma mais eficaz, evitando bloqueios desnecessários e melhorando a capacidade de resposta do sistema em cenários de carga elevada.
+
+No próximo capítulo, explorarei alguns problemas comuns na implementação de código assíncrono, destacando os desafios que os desenvolvedores enfrentam ao lidar com tarefas assíncronas e como esses problemas podem ser abordados de forma eficiente para garantir um código assíncrono robusto e eficaz.
