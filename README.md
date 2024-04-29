@@ -36,11 +36,10 @@ Este repo se destina à todos os artefatos da formação de engenheiro .NET com 
    - Impacto na escalabilidade
    - ThreadPool overhead: Problemas de comuns no uso do async await
 
-4. Ciclo de vida de objetos de I/O
+4. Utilização eficiente de objetos I/O
    - Gerenciamento dos objetos de conexão com Banco de dados
    - Gerenciamento dos objetos de conexão http
    - Gerenciamento dos objetos de FileStream
-   - Como tomar decisão de ciclo de vida de um objeto de I/O
 
 ## Uso Avançado das Ferramentas do .NET SDK
 
