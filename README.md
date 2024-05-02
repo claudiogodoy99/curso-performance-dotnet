@@ -25,18 +25,18 @@ Este repo se destina à todos os artefatos da formação de engenheiro .NET com 
    - Uso e importância do benchmark
    - Ferramentas de teste de carga: K6
 
-2. Gerenciando a memória
+2. [Gerenciando a memória](Otimização%20Avançada%20em%20.NET/Gerenciado%20a%20memória.md)
    - Otimizando o Desempenho de `Strings` no .NET
    - Como otimizar expressões regulares `Regex`
    - Expressões `LINQ`
    - Utilização de `structs` e `refs`
 
-3. Modelo de programação assíncrona (TAP)
+3. [Modelo de programação assíncrona (TAP)](./Otimização%20Avançada%20em%20.NET/Modelo%20de%20programação%20assíncrona%20(TAP).md)
    - Async Await
    - Impacto na escalabilidade
    - ThreadPool overhead: Problemas de comuns no uso do async await
 
-4. Utilização eficiente de objetos I/O
+4. [Utilização eficiente de objetos I/O](Otimização%20Avançada%20em%20.NET/Utilização%20eficiente%20de%20objetos%20I-O.md)
    - Gerenciamento dos objetos de conexão com Banco de dados
    - Gerenciamento dos objetos de conexão http
    - Gerenciamento dos objetos de FileStream
