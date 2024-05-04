@@ -24,11 +24,12 @@ Este repo se destina à todos os artefatos da formação de engenheiro .NET com 
 1. [Análise de desempenho em ciclo de desenvolvimento](Otimização%20Avançada%20em%20.NET/Análise%20de%20desempenho%20em%20ciclo%20de%20desenvolvimento.md)
    - Uso e importância do benchmark
    - Ferramentas de teste de carga: K6
+   - Ferramentas de diagnóstico do Visual Studio
 
 2. [Gerenciando a memória](Otimização%20Avançada%20em%20.NET/Gerenciado%20a%20memória.md)
-   - Otimizando o Desempenho de `Strings` no .NET
-   - Como otimizar expressões regulares `Regex`
-   - Expressões `LINQ`
+   - Otimizando `Strings` no .NET
+   - Otimização de expressões regulares
+   - Otimização de expressões `LINQ`
    - Utilização de `structs` e `refs`
 
 3. [Modelo de programação assíncrona (TAP)](./Otimização%20Avançada%20em%20.NET/Modelo%20de%20programação%20assíncrona%20(TAP).md)
